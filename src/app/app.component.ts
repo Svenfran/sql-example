@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { DatabaseService } from './services/database.service';
+import { Platform } from '@ionic/angular';
+import { App } from '@capacitor/app';
 
 @Component({
   selector: 'app-root',
@@ -7,5 +10,24 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class AppComponent {
-  constructor() {}
+
+  constructor(
+    private database: DatabaseService,
+    private platform: Platform
+  ) {
+    this.initApp();
+  }
+
+  async initApp() {
+    this.initBackButton();
+    if (this.platform.is('mobile')) {
+      await this.database.initializePlugin()
+    }
+  };
+
+  initBackButton() {
+    this.platform.backButton.subscribeWithPriority(10, () => {
+      App.exitApp();
+    })
+  }
 }

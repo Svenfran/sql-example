@@ -1,20 +1,62 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
-    <ion-title>
-      Blank
+    <ion-title class="ion-text-center">
+      Todo-List
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+<ion-content>
+  <ion-item>
+    <ion-input (keyup.enter)="createUser()" [(ngModel)]="newUserName" type="text" placeholder="Eintrag hinzufügen"></ion-input>
+    <ion-buttons>
+      <ion-button (click)="createUser()">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
+
+  <ion-item lines="none" *ngFor="let user of users()">
+    <ion-checkbox
+      aria-label="Label"
+      slot="start"
+      [(ngModel)]="user.active"
+      (ionChange)="updateUser(user)"
+    ></ion-checkbox>
+    <ion-label *ngIf="!user.isEditing" (click)="enableEditing(user)">
+      {{ user.name }}
+    </ion-label>
+    <ion-input
+      *ngIf="user.isEditing"
+      [(ngModel)]="user.name"
+      #inputRef
+    >
+      <ion-button
+        slot="end"
+        (click)="disableEditing(user)"
+        fill="clear"
+        color="medium"
+        >
+          <ion-icon name="close" slot="icon-only"></ion-icon>
+      </ion-button>
+      <ion-button
+        slot="end"
+        (click)="updateUser(user)"
+        fill="clear"
+        color="success"
+        >
+          <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-input>
+    <ion-button
+      *ngIf="!user.isEditing"
+      slot="end"
+      (click)="deleteUser(user)"
+      fill="clear"
+      color="danger"
+    >
+      <ion-icon name="trash" slot="icon-only"></ion-icon>
+    </ion-button>
+  </ion-item>
 </ion-content>

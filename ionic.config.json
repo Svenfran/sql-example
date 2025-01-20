@@ -1,5 +1,7 @@
 {
   "name": "sqlite-example",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
