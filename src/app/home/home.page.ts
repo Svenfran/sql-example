@@ -36,7 +36,7 @@ export class HomePage {
   }
 
   async createUser() {
-    await this.database.addUser(this.newUserName);
+    await this.database.addUser(this.newUserName.trim());
     this.newUserName = '';
   }
 
@@ -48,5 +48,9 @@ export class HomePage {
 
   deleteUser(user: User) {
     this.database.deleteUserById(user.id.toString());
+  }
+
+  deleteActiveUsers() {
+    this.database.deleteActiveUsers();
   }
 }

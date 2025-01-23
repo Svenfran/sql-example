@@ -8,15 +8,6 @@
 
 
 <ion-content>
-  <ion-item>
-    <ion-input (keyup.enter)="createUser()" [(ngModel)]="newUserName" type="text" placeholder="Eintrag hinzufügen"></ion-input>
-    <ion-buttons>
-      <ion-button (click)="createUser()">
-        <ion-icon name="add" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </ion-item>
-
   <ion-item lines="none" *ngFor="let user of users()">
     <ion-checkbox
       aria-label="Label"
@@ -59,4 +50,24 @@
       <ion-icon name="trash" slot="icon-only"></ion-icon>
     </ion-button>
   </ion-item>
+
+  <ion-item lines="none">
+    <ion-icon name="square-outline"></ion-icon>
+    <ion-input class="ion-padding" (keyup.enter)="createUser()" [(ngModel)]="newUserName" type="text" placeholder="Eintrag hinzufügen"></ion-input>
+    <ion-buttons>
+      <ion-button (click)="createUser()">
+        <ion-icon name="add" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-item>
+
+  <ion-row [hidden]="users().length >= 0">
+    <ion-col size-md="6" offset-md="3">
+      <div class="chip">
+        <ion-chip *ngIf="users().length >= 0" (click)="deleteActiveUsers()" color="primary">
+          <ion-text><small>Erledigte löschen</small></ion-text>
+        </ion-chip>
+      </div>
+    </ion-col>
+  </ion-row>
 </ion-content>

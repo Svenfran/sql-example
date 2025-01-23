@@ -25,3 +25,9 @@
 #container a {
   text-decoration: none;
 }
+
+.chip {
+  display: flex;
+  flex-flow: row-reverse;
+  padding-top: 1rem;
+}

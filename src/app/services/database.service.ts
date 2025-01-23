@@ -77,4 +77,13 @@ export class DatabaseService {
 
     return result;
   }
+
+  async deleteActiveUsers() {
+    const query  = `DELETE FROM users WHERE active = ?`;
+    const result = await this.db.query(query, [1]);
+
+    this.loadUsers();
+
+    return result;
+  }
 }
