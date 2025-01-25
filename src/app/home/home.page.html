@@ -23,39 +23,49 @@
       [(ngModel)]="user.name"
       #inputRef
     >
-      <ion-button
-        slot="end"
-        (click)="disableEditing(user)"
-        fill="clear"
-        color="medium"
-        >
-          <ion-icon name="close" slot="icon-only"></ion-icon>
-      </ion-button>
-      <ion-button
-        slot="end"
-        (click)="updateUser(user)"
-        fill="clear"
-        color="success"
-        >
-          <ion-icon name="checkmark" slot="icon-only"></ion-icon>
-      </ion-button>
+      <ion-buttons slot="end">
+        <ion-button
+          size="small"
+          (click)="disableEditing(user)"
+          fill="clear"
+          color="medium"
+          >
+            <ion-icon name="close" slot="icon-only"></ion-icon>
+        </ion-button>
+        <ion-button
+          size="small"
+          (click)="updateUser(user)"
+          fill="clear"
+          color="success"
+          >
+            <ion-icon name="checkmark" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-input>
-    <ion-button
-      *ngIf="!user.isEditing"
-      slot="end"
-      (click)="deleteUser(user)"
-      fill="clear"
-      color="danger"
-    >
-      <ion-icon name="trash" slot="icon-only"></ion-icon>
-    </ion-button>
+    <ion-buttons>
+      <ion-button
+        *ngIf="!user.isEditing"
+        slot="end"
+        size="small"
+        (click)="deleteUser(user)"
+        fill="clear"
+        color="danger"
+      >
+        <ion-icon name="trash" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-item>
 
   <ion-item lines="none">
-    <ion-icon name="square-outline"></ion-icon>
-    <ion-input class="ion-padding" (keyup.enter)="createUser()" [(ngModel)]="newUserName" type="text" placeholder="Eintrag hinzufügen"></ion-input>
+    <!-- <ion-icon name="square-outline"></ion-icon> -->
+    <ion-checkbox
+      aria-label="Label"
+      slot="start"
+      disabled="true"
+    ></ion-checkbox>
+    <ion-input (keyup.enter)="createUser()" [(ngModel)]="newUserName" type="text" placeholder="Eintrag hinzufügen"></ion-input>
     <ion-buttons>
-      <ion-button (click)="createUser()">
+      <ion-button (click)="createUser()" size="small" slot="end">
         <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
