@@ -1,4 +1,4 @@
-package io.ionic.starter;
+package de.svenfran.sqliteexample;
 
 import com.getcapacitor.BridgeActivity;
 
