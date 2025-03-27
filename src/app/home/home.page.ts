@@ -1,5 +1,5 @@
 import { Component, effect, ViewChild } from '@angular/core';
-import { DatabaseService, User } from '../services/database.service';
+import { DatabaseService, Todo } from '../services/database.service';
 import { IonInput } from '@ionic/angular';
 
 @Component({
@@ -10,47 +10,47 @@ import { IonInput } from '@ionic/angular';
 })
 export class HomePage {
   @ViewChild('inputRef', { static: false }) inputElement!: IonInput;
-  users = this.database.getUsers();
-  newUserName = '';
+  todos = this.database.getTodos();
+  newTodoDescription = '';
 
   constructor(private database: DatabaseService) {
     effect(() => {
-      console.log('USER CHANGED', this.users());
+      console.log('TODO CHANGED', this.todos());
     });
   }
 
-  enableEditing(user: User) {
-    this.users().forEach(u => {
-      u.isEditing = 0;
+  enableEditing(todo: Todo) {
+    this.todos().forEach(t => {
+      t.isEditing = 0;
     });
-    user.isEditing = 1;
+    todo.isEditing = 1;
 
     setTimeout(() => {
       this.inputElement.setFocus();
     }, 0);
   }
 
-  disableEditing(user: User) {
-    user.isEditing = 0;
-    this.database.loadUsers();
+  disableEditing(todo: Todo) {
+    todo.isEditing = 0;
+    this.database.loadTodos();
   }
 
-  async createUser() {
-    await this.database.addUser(this.newUserName.trim());
-    this.newUserName = '';
+  async createTodo() {
+    await this.database.addTodo(this.newTodoDescription.trim());
+    this.newTodoDescription = '';
   }
 
-  updateUser(user: User) {
-    const active = user.active ? 1 : 0;
-    this.database.updateUserById(user.id.toString(), user.name.trim(), active);
-    user.isEditing = 0;
+  updateTodo(todo: Todo) {
+    const done = todo.done ? 1 : 0;
+    this.database.updateTodoById(todo.id.toString(), todo.description.trim(), done);
+    todo.isEditing = 0;
   }
 
-  deleteUser(user: User) {
-    this.database.deleteUserById(user.id.toString());
+  deleteTodo(todo: Todo) {
+    this.database.deleteTodoById(todo.id.toString());
   }
 
-  deleteActiveUsers() {
-    this.database.deleteActiveUsers();
+  deleteActiveTodos() {
+    this.database.deleteActiveTodos();
   }
 }

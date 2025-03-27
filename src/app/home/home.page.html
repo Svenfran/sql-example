@@ -8,25 +8,25 @@
 
 
 <ion-content>
-  <ion-item lines="none" *ngFor="let user of users()">
+  <ion-item lines="none" *ngFor="let todo of todos()">
     <ion-checkbox
       aria-label="Label"
       slot="start"
-      [(ngModel)]="user.active"
-      (ionChange)="updateUser(user)"
+      [(ngModel)]="todo.done"
+      (ionChange)="updateTodo(todo)"
     ></ion-checkbox>
-    <ion-label *ngIf="!user.isEditing" (click)="enableEditing(user)">
-      {{ user.name }}
+    <ion-label *ngIf="!todo.isEditing" (click)="enableEditing(todo)">
+      {{ todo.description }}
     </ion-label>
     <ion-input
-      *ngIf="user.isEditing"
-      [(ngModel)]="user.name"
+      *ngIf="todo.isEditing"
+      [(ngModel)]="todo.description"
       #inputRef
     >
       <ion-buttons slot="end">
         <ion-button
           size="small"
-          (click)="disableEditing(user)"
+          (click)="disableEditing(todo)"
           fill="clear"
           color="medium"
           >
@@ -34,7 +34,7 @@
         </ion-button>
         <ion-button
           size="small"
-          (click)="updateUser(user)"
+          (click)="updateTodo(todo)"
           fill="clear"
           color="success"
           >
@@ -44,10 +44,10 @@
     </ion-input>
     <ion-buttons>
       <ion-button
-        *ngIf="!user.isEditing"
+        *ngIf="!todo.isEditing"
         slot="end"
         size="small"
-        (click)="deleteUser(user)"
+        (click)="deleteTodo(todo)"
         fill="clear"
         color="danger"
       >
@@ -63,18 +63,18 @@
       slot="start"
       disabled="true"
     ></ion-checkbox>
-    <ion-input (keyup.enter)="createUser()" [(ngModel)]="newUserName" type="text" placeholder="Eintrag hinzufügen"></ion-input>
+    <ion-input (keyup.enter)="createTodo()" [(ngModel)]="newTodoDescription" type="text" placeholder="Eintrag hinzufügen"></ion-input>
     <ion-buttons>
-      <ion-button (click)="createUser()" size="small" slot="end">
+      <ion-button (click)="createTodo()" size="small" slot="end">
         <ion-icon name="add" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-item>
 
-  <ion-row [hidden]="users().length >= 0">
+  <ion-row [hidden]="todos().length >= 0">
     <ion-col size-md="6" offset-md="3">
       <div class="chip">
-        <ion-chip *ngIf="users().length >= 0" (click)="deleteActiveUsers()" color="primary">
+        <ion-chip *ngIf="todos().length >= 0" (click)="deleteActiveTodos()" color="primary">
           <ion-text><small>Erledigte löschen</small></ion-text>
         </ion-chip>
       </div>

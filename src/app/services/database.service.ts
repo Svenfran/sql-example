@@ -1,12 +1,12 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { CapacitorSQLite, SQLiteConnection, SQLiteDBConnection } from '@capacitor-community/sqlite';
 
-const DB_USERS = "myuserdb";
+const DB_TODO = "tododb";
 
-export interface User {
+export interface Todo {
   id: number;
-  name: string;
-  active: number;
+  description: string;
+  done: number;
   isEditing: number;
 }
 
@@ -16,13 +16,13 @@ export interface User {
 export class DatabaseService {
   private sqlite: SQLiteConnection = new SQLiteConnection(CapacitorSQLite);
   private db!: SQLiteDBConnection;
-  private users: WritableSignal<User[]> = signal<User[]>([])
+  private todos: WritableSignal<Todo[]> = signal<Todo[]>([])
 
   constructor() { }
 
   async initializePlugin() {
     this.db = await this.sqlite.createConnection(
-      DB_USERS,
+      DB_TODO,
       false,
       'no-encryption',
       1,
@@ -31,58 +31,58 @@ export class DatabaseService {
 
     await this.db.open();
 
-    const schema = `CREATE TABLE IF NOT EXISTS users (
+    const schema = `CREATE TABLE IF NOT EXISTS todos (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL,
-    active INTEGER DEFAULT 0,
+    description TEXT NOT NULL,
+    done INTEGER DEFAULT 0,
     isEditing INTEGER DEFAULT 0);`;
    
     await this.db.execute(schema);
-    this.loadUsers();
+    this.loadTodos();
     return true;
   }
 
-  public getUsers() {
-    return this.users;
+  public getTodos() {
+    return this.todos;
   }
 
-  async loadUsers() {
-    const users = await this.db.query('SELECT * FROM users;');
-    this.users.set(users.values || []);
+  async loadTodos() {
+    const todos = await this.db.query('SELECT * FROM todos;');
+    this.todos.set(todos.values || []);
   }
 
-  async addUser(name: string) {
-    const query = `INSERT INTO users (name) VALUES (?)`;
-    const result = await this.db.query(query, [name]);
+  async addTodo(description: string) {
+    const query = `INSERT INTO todos (description) VALUES (?)`;
+    const result = await this.db.query(query, [description]);
 
-    this.loadUsers();
+    this.loadTodos();
 
     return result;
   }
 
-  async updateUserById(id: string, name: string, active: number) {
-    const query = `UPDATE users SET name = ?, active = ? WHERE id = ?`;
-    const result = await this.db.query(query, [name, active, id]);
+  async updateTodoById(id: string, description: string, done: number) {
+    const query = `UPDATE todos SET description = ?, done = ? WHERE id = ?`;
+    const result = await this.db.query(query, [description, done, id]);
 
-    this.loadUsers();
+    this.loadTodos();
 
     return result;
   }
 
-  async deleteUserById(id: string) {
-    const query = `DELETE FROM users WHERE id = ?`;
+  async deleteTodoById(id: string) {
+    const query = `DELETE FROM todos WHERE id = ?`;
     const result = await this.db.query(query, [id]);
 
-    this.loadUsers();
+    this.loadTodos();
 
     return result;
   }
 
-  async deleteActiveUsers() {
-    const query  = `DELETE FROM users WHERE active = ?`;
+  async deleteActiveTodos() {
+    const query  = `DELETE FROM todos WHERE done = ?`;
     const result = await this.db.query(query, [1]);
 
-    this.loadUsers();
+    this.loadTodos();
 
     return result;
   }
